@@ -144,3 +144,8 @@ body {
   background: url(../images/delete-full.svg) no-repeat center center;
   background-size: contain;
 }
+
+.task--complete span {
+  text-decoration: line-through;
+  color: #939aab;
+}
