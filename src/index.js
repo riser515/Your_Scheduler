@@ -3,6 +3,7 @@ import './styles.css';
 let tasks = [];
 const tasksRoot = document.querySelector('.tasks');
 const list = tasksRoot.querySelector('.tasks__list');
+const count = tasksRoot.querySelector('.tasks__count');
 const form = document.forms.tasks;
 const input = form.elements.task;
 
@@ -18,6 +19,7 @@ function renderTask(tasks){
         `
     });
     list.innerHTML = taskString;
+    count.innerText = tasks.filter(task => !task.complete).length;
 }
 
 function addTask(e){
