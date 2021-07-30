@@ -50,6 +50,7 @@ body {
 
 .tasks__header div {
   color: #777d8c;
+  display: flex;
 }
 
 .tasks__form {
@@ -148,4 +149,31 @@ body {
 .task--complete span {
   text-decoration: line-through;
   color: #939aab;
+}
+
+.tasks--clear {
+  font-family: "Balsamiq Sans";
+  outline: 0;
+  border: 0;
+  padding: 0 5px;
+  margin-left: auto;
+  font-size: 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  color: #939aab;
+  border-bottom: 1px solid transparent;
+  width: 136px;
+  height: 19px;
+  justify-items: center;
+  position: relative;
+  top: 17px;
+}
+
+.tasks--clear:hover {
+  color: #ff5858;
+}
+
+.tasks--clear:focus {
+  color: #ff5858;
+  border-color: #ff5858;
 }

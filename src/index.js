@@ -4,6 +4,7 @@ let tasks = [];
 const tasksRoot = document.querySelector('.tasks');
 const list = tasksRoot.querySelector('.tasks__list');
 const count = tasksRoot.querySelector('.tasks__count');
+const clear = tasksRoot.querySelector('.tasks--clear');
 const form = document.forms.tasks;
 const input = form.elements.task;
 
@@ -20,6 +21,7 @@ function renderTask(tasks){
     });
     list.innerHTML = taskString;
     count.innerText = tasks.filter(task => !task.complete).length;
+    clear.style.display = tasks.filter(task => task.complete).length ? 'block' : 'none';
 }
 
 function addTask(e){
@@ -52,9 +54,22 @@ function updateTask(e){
     renderTask(tasks);
 }
 
+function deleteTask(e){
+    if(e.target.nodeName.toLowerCase() !== 'button'){
+        return;
+    }
+    const id = parseInt(e.target.parentNode.getAttribute('data-id'), 10);
+    const text = e.target.previousElementSibling.innerText;
+    if(window.confirm(`Do you want to delete ${text}?`)){
+        tasks = tasks.filter((task, index) => index!== id);
+        renderTask(tasks);
+    }
+}
+
 function init(){
     form.addEventListener('submit', addTask);
     list.addEventListener('change', updateTask);
+    list.addEventListener('click', deleteTask);
 }
 
 init();
