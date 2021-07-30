@@ -87,11 +87,48 @@ function clearCompletedTasks(){
     }
 }
 
+function editTask(e){
+    if(e.target.nodeName.toLowerCase() !== 'span')
+        return;
+    const id = parseInt(e.target.parentNode.getAttribute('data-id'), 10);
+    const textTask = tasks[id].text;
+    
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = textTask;
+
+    function handleEdit(e){
+        e.stopPropagation();
+        const text = input.value;
+        if(input.value !== textTask){
+            tasks = tasks.map((task, index) => {
+                if(index == id){
+                    return {
+                        ...task,
+                        text
+                    };
+                }
+                return task;
+            });
+            renderTask(tasks);
+            saveTasksToStorage(tasks);
+        }
+        e.target.style.display = '';
+        input.removeEventListener('change', handleEdit);
+        input.remove();
+    }
+
+    e.target.style.display = 'none';
+    e.target.parentNode.append(input);
+    input.addEventListener('change', handleEdit);
+}
+
 function init(){
     renderTask(tasks);
     form.addEventListener('submit', addTask);
     list.addEventListener('change', updateTask);
     list.addEventListener('click', deleteTask);
+    list.addEventListener('dblclick', editTask);
     clear.addEventListener('click', clearCompletedTasks);
 }
 
