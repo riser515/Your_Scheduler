@@ -1,12 +1,16 @@
 import './styles.css';
 
-let tasks = [];
+let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 const tasksRoot = document.querySelector('.tasks');
 const list = tasksRoot.querySelector('.tasks__list');
 const count = tasksRoot.querySelector('.tasks__count');
 const clear = tasksRoot.querySelector('.tasks--clear');
 const form = document.forms.tasks;
 const input = form.elements.task;
+
+function saveTasksToStorage(tasks){
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
 
 function renderTask(tasks){
     let taskString = '';
@@ -36,6 +40,7 @@ function addTask(e){
         }
     ];
     renderTask(tasks);
+    saveTasksToStorage(tasks);
     input.value = '';
 }
 
@@ -52,6 +57,7 @@ function updateTask(e){
         return task;
     });
     renderTask(tasks);
+    saveTasksToStorage(tasks);
 }
 
 function deleteTask(e){
@@ -63,13 +69,30 @@ function deleteTask(e){
     if(window.confirm(`Do you want to delete ${text}?`)){
         tasks = tasks.filter((task, index) => index!== id);
         renderTask(tasks);
+        saveTasksToStorage(tasks, JSON.stringify(tasks));
+    }
+}
+
+function clearCompletedTasks(){
+    const count = tasks.filter(task => task.complete).length;
+
+    if(count == 0){
+        return;
+    }
+
+    if(window.confirm(`Do you want to delete ${count} tasks?`)){
+        tasks = tasks.filter(task => !task.complete);
+        renderTask(tasks);
+        saveTasksToStorage(tasks);
     }
 }
 
 function init(){
+    renderTask(tasks);
     form.addEventListener('submit', addTask);
     list.addEventListener('change', updateTask);
     list.addEventListener('click', deleteTask);
+    clear.addEventListener('click', clearCompletedTasks);
 }
 
 init();
